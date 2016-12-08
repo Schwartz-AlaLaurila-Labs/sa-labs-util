@@ -1,14 +1,14 @@
-function [spikeTimes, spikeAmplitudes, refractoryViolations] = spikeDetector(dataMatrix,varargin)
-% 
+function [spikeTimes, spikeAmplitudes, refractoryViolations] = detectSpikes(dataMatrix, varargin)
+%
 % SpikeDetector detects spikes in an extracellular / cell attached recording
 %   [SpikeTimes, SpikeAmplitudes, RefractoryViolations] = SpikeDetector(dataMatrix,varargin)
-%   
+%
 %   RETURNS
 %       spikeTimes: In datapoints. Cell array. Or array if just one trial;
 %       spikeAmplitudes: Cell array.
 %       refractoryViolations: Indices of SpikeTimes that had refractory
 %           violations. Cell array.
-%   
+%
 %   REQUIRED INPUTS
 %       dataMatrix: Each row is a trial
 %   OPTIONAL ARGUMENTS

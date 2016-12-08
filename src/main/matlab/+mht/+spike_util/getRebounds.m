@@ -1,6 +1,8 @@
 function r = getRebounds(peaks_ind,trace,searchInterval)
 %Mod MHT 1/28/15 - gets "rebounds" +/- searchInterval/2 of peaktime
 
+import mht.signal_processing.*;
+
 peaks = trace(peaks_ind);
 r.Left = zeros(size(peaks));
 r.Right = zeros(size(peaks));
