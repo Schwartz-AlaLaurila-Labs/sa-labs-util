@@ -22,27 +22,33 @@ classdef SpikeUtil < handle
             obj.detectorMode = mode;
         end
         
-        function features = extractSpikes(obj, response)
+        function features = extractSpikes(obj, responses)
             
             spikeTimeId = sa_labs.common.SpikeFeatures.SPIKE_TIME;
             spikeAmpId = sa_labs.common.SpikeFeatures.SPIKE_AMP;
             
             switch obj.detectorMode
                 case 'mht.spike_util'
-                    [spikeTimes, spikeAmp] = mht.spike_util.detectSpikes(response);
+                    [spikeTimes, spikeAmp] = mht.spike_util.detectSpikes(responses);
                     
             end
+            import sa_labs.analysis.entity.*
             
-            features = sa_labs.analysis.entity.Feature.empty(0, 2);
-            spikeTimeFeature = sa_labs.analysis.entity.Feature.create(spikeTimeId.description);
-            spikeTimeFeature.data = spikeTimes;
-            features(1) = spikeTimeFeature;
+            n = size(spikeTimes);
+            features = Feature.empty(0, 2 * n);
+            index = 1;
             
-            spikeAmpFeature = sa_labs.analysis.entity.Feature.create(spikeAmpId.description);
-            spikeAmpFeature.data = spikeAmp;
-            features(2) = spikeAmpFeature;
+            for i = 1 : n
+                spikeTimeFeature = Feature.create(spikeTimeId.description);
+                spikeTimeFeature.data = spikeTimes{i};
+                features(index) = spikeTimeFeature;
+                index = index + 1;
+                
+                spikeAmpFeature = Feature.create(spikeAmpId.description);
+                spikeAmpFeature.data = spikeAmp{i};
+                features(index) = spikeAmpFeature;
+            end
         end
-        
     end
     
     methods(Access = private)
