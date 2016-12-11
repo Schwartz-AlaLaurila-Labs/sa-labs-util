@@ -34,9 +34,14 @@ classdef SpikeUtil < handle
             end
             import sa_labs.analysis.entity.*
             
-            n = size(spikeTimes);
+            [n, ~] = size(spikeTimes);
             features = Feature.empty(0, 2 * n);
             index = 1;
+            
+            if n == 1
+                spikeTimes = {spikeTimes};
+                spikeAmp = {spikeAmp};
+            end
             
             for i = 1 : n
                 spikeTimeFeature = Feature.create(spikeTimeId.description);
@@ -47,18 +52,9 @@ classdef SpikeUtil < handle
                 spikeAmpFeature = Feature.create(spikeAmpId.description);
                 spikeAmpFeature.data = spikeAmp{i};
                 features(index) = spikeAmpFeature;
+                index = index + 1;
             end
         end
     end
-    
-    methods(Access = private)
-        
-        function n = getSampleSizePerBin(obj, sampleRate)
-            rate = round(sampleRate / 1E3);
-            n = round(obj.binWidth * rate);
-        end
-        
-    end
-    
 end
 
