@@ -1,16 +1,38 @@
+%% Load test file
+
 dir = fullfile(fileparts(fileparts(mfilename('fullpath'))), 'data');
 data = load([dir '/signal-for-spike.dat']);
 
-tic
-util = sa_labs.common.SpikeUtil('mht.spike_util');
-features = util.extractSpikes(data(1, :));
-toc;
 
-util.smoothingWindowPSTH = 100;
+%% Detect spikes and create feature
 
-plot(util.getPSTH(features(ismember({features.name}, 'SPIKE_TIME')),...
-    containers.Map({'sampleRate', 'responseLength'}, {10000, 15000})))
+features = sa_labs.common.spike.features.SpikeTimeFeature.empty(0, 6);
+props = containers.Map();
+props('id') = 'SPIKE';
+props('properties') = 'endOffset = 0, baseLineEnd = 0';
+para = struct('preTime', 500, 'stimTime', 1000, 'tailTime', 1000, 'responseLength', 25000, 'sampleRate', 10000);
 
-% Benchmarking spike detection algorithm
+[spikeTimes, spikeAmplitudes] = mht.spike_util.detectSpikes(data);
+description = sa_labs.analysis.entity.FeatureDescription(props);
+
+for i = 1 : length(spikeTimes)
+    f = sa_labs.common.spike.features.SpikeTimeFeature(description, spikeTimes{i}, para) %#ok
+    features(i) = f;
+end
+
+%% plot psth response of the detected spike
+
+props = containers.Map();
+props('id') = 'PSTH';
+props('properties') = 'smoothingWindowPSTH = 200, binWidthPSTH = 10';
+psthDesc = sa_labs.analysis.entity.FeatureDescription(props);
+
+[x, y] = sa_labs.common.spike.getPSTH(psthDesc, features);
+plot(x,y);
+
+%% Benchmarking spike detection algorithm
+
 tic; mht.spike_util.detectSpikes(data); toc;
-mht.spike_util.detectSpikes(data, 'checkDetection', true);
+
+%% Visual verification
+% mht.spike_util.detectSpikes(data, 'checkDetection', true);
