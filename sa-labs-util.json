@@ -1,0 +1,17 @@
+[
+	{
+		"extra": "",
+		"flavor": "",
+		"hook": "",
+		"importance": "",
+		"localHookTemplate": "",
+		"name": "sa-labs-util",
+		"pathPlacement": "append",
+		"requirementHook": "",
+		"subfolder": "",
+		"toolboxRoot": "",
+		"type": "git",
+		"update": "",
+		"url": "https:\/\/github.com\/Schwartz-AlaLaurila-Labs\/sa-labs-util"
+	}
+]
