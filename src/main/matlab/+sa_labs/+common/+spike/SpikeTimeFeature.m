@@ -215,7 +215,7 @@ classdef SpikeTimeFeature < handle
         
         function [x, count] = getPSTH(spikeTimeFeatures, varargin)
             
-            import sa_labs.common.spike.features.*;
+            import sa_labs.common.spike.*;
             desc = SpikeTimeFeature.parsePSTHInputParameters(varargin{:});
             
             smoothingWindowPSTH = desc.smoothingWindowPSTH;

@@ -5,7 +5,7 @@ data = load([dir '/signal-for-spike.dat']);
 
 
 %% Detect spikes and create feature
-import sa_labs.common.spike.features.*;
+import sa_labs.common.spike.*;
 samplingRate = 1e4;
 
 % paramter in seconds

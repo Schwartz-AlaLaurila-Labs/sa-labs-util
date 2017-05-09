@@ -8,3 +8,6 @@
 *.mlappinstall
 *.h5
 *.mat
+
+# IPython notebook
+.ipynb_checkpoints
