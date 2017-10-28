@@ -28,6 +28,7 @@ for i = 1 : n
     %       |----------------------|-----------------|------------------|---------------|---------------------------|
     %     -0.5                  <desc>             0.0                <desc>
     % (baselineStart)       (baseLineEnd = 0) (intervalStart = 0) (endOffset = 0) (intervalEnd)                   (endTime)
+    
     f = SpikeTimeFeature(spikeTimesReleativeToStim, -baselineStart, stimTime, samplingRate, endTime) %#ok
     features(i) = f;
 end

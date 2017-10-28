@@ -1,5 +1,6 @@
 function plotEpochs(epochs, devices, axes, varargin)
 
+import sa_labs.analysis.util.*;
 clearAxes(axes);
 axesArray = getNewAxesForSublot(axes, numel(devices));
 
@@ -43,6 +44,7 @@ for i = 1 : n
         set(startLine, 'Parent', axes);
         set(endLine, 'Parent', axes);
     end
+    plotSpikes(epochData, device, x, data, axes)
     ylabel(axes, [device '(',units ')']);
 end
 hold(axes, 'off');
@@ -50,26 +52,9 @@ xlabel(axes, 'Time (s)');
 
 end
 
-function clearAxes(axes)
-pannel = get(axes, 'Parent');
-childAxes = get(pannel, 'Children');
-
-for i = 1 : numel(childAxes)
-    if ~ isequal(childAxes(i), axes)
-        delete(childAxes(i));
-    end
-end
-fontName = get(axes, 'FontName');
-fontSize = get(axes, 'FontSize');
-cla(axes, 'reset');
-set(axes, 'FontName', fontName);
-set(axes, 'FontSize', fontSize);
-end
-
-function axesArray = getNewAxesForSublot(axes, n)
-axesArray = axes;
-for i = 2 : n
-    ax = copyobj(axes, get(axes, 'Parent'));
-    axesArray = [axesArray, ax]; %#ok
+function plotSpikes(epochData, device, x, data, axes)
+spikeTimes = epochData.getDerivedResponse('spikeTimes', device);
+if ~ isempty(spikeTimes)
+    plot(axes, x(spikeTimes), data(spikeTimes), 'rx');
 end
 end

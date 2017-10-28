@@ -1,4 +1,4 @@
-function [spikeTimes, spikeAmplitudes, refractoryViolations] = detectSpikes(dataMatrix, varargin)
+function [spikeTimes, spikeAmplitudes, statistics] = detectSpikes(dataMatrix, varargin)
 %
 % SpikeDetector detects spikes in an extracellular / cell attached recording
 %   [SpikeTimes, SpikeAmplitudes, RefractoryViolations] = SpikeDetector(dataMatrix,varargin)
@@ -47,11 +47,6 @@ nTraces = size(dataMatrix, 1);
 spikeTimes = cell(nTraces, 1);
 spikeAmplitudes = cell(nTraces, 1);
 refractoryViolations = cell(nTraces, 1);
-
-if (checkDetection)
-    figure;
-    figHandle = gcf;
-end
 
 for tt = 1 : nTraces
     currentTrace = dataMatrix(tt, :);
@@ -115,37 +110,19 @@ for tt = 1 : nTraces
         disp(['Trial '  num2str(tt) ': ' num2str(ref_violations) ' refractory violations']);
     end
     
-    if (checkDetection)
-        plotClusteringData()
-    end
+    statistics(tt) = struct();
+    statistics(tt).refractoryViolations = refractoryViolations{tt};
+    statistics(tt).spikeClusterIndex = spikeClusterIndex;
+    statistics(tt).clusterIndex = clusterIndex;
+    statistics(tt).nonspikeClusterIndex = nonspikeClusterIndex;
+    statistics(tt).rebound = rebound;
+    statistics(tt).sigF = sigF;
+    statistics(tt).peakAmplitudes = peakAmplitudes;
 end
 
 if length(spikeTimes) == 1 %return vector not cell array if only 1 trial
     spikeTimes = spikeTimes{1};
     spikeAmplitudes = spikeAmplitudes{1};
-    refractoryViolations = refractoryViolations{1};
 end
-
-    function plotClusteringData()
-        figure(figHandle)
-        subplot(1,2,1); hold on;
-        plot3(peakAmplitudes(clusterIndex==spikeClusterIndex),...
-            rebound.Left(clusterIndex==spikeClusterIndex),...
-            rebound.Right(clusterIndex==spikeClusterIndex),'ro')
-        plot3(peakAmplitudes(clusterIndex==nonspikeClusterIndex),...
-            rebound.Left(clusterIndex==nonspikeClusterIndex),...
-            rebound.Right(clusterIndex==nonspikeClusterIndex),'ko')
-        xlabel('Peak Amplitude'); ylabel('L rebound'); zlabel('R rebound')
-        view([8 36])
-        subplot(1,2,2)
-        plot(currentTrace,'k'); hold on;
-        plot(spikeTimes{tt}, ...
-            currentTrace(spikeTimes{tt}),'rx')
-        plot(spikeTimes{tt}(refractoryViolations{tt}), ...
-            currentTrace(spikeTimes{tt}(refractoryViolations{tt})),'go')
-        title(['SpikeFactor = ', num2str(sigF)])
-        drawnow;
-        pause(); clf;
-    end
 
 end
