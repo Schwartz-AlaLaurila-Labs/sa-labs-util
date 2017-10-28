@@ -46,8 +46,8 @@ for i = 1 : n
     end
     plotSpikes(epochData, device, x, data, axes)
     ylabel(axes, [device '(',units ')']);
+    hold(axes, 'off');
 end
-hold(axes, 'off');
 xlabel(axes, 'Time (s)');
 
 end

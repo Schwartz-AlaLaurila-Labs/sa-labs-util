@@ -24,7 +24,7 @@ for epochData = epochs
         
         epochData.addDerivedResponse('spikeTimes', spikeTimes, device);
         epochData.addDerivedResponse('spikeAmplitudes', spikeAmplitudes, device);
-        epochData.addDerivedResponse('spikeStatistics', statistics, device);
+        epochData.addDerivedResponseInMemory('spikeStatistics', statistics, device);
     end
 end
 end

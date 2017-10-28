@@ -1,9 +1,14 @@
 function  plotSpikesStatistics(epochData, devices, axes, varargin)
 n = numel(devices);
-
 sa_labs.analysis.util.clearAxes(axes);
+
+if numel(epochData) > 1
+    title(axes, 'Cannot display stats for multiple epochs')
+    return
+end
+
 axesArray = sa_labs.analysis.util.getNewAxesForSublot(axes, n);
- 
+
 for i = 1 : n
     device = devices{i};
 
@@ -26,8 +31,10 @@ for i = 1 : n
         rebound.Left(clusterIndex == nonspikeClusterIndex),...
         rebound.Right(clusterIndex == nonspikeClusterIndex), 'ko');
     hold(ax, 'off');
+    title(ax, ['spike factor ' num2str(statistics.sigF) ]);
 end
 xlabel(ax, 'Peak Amplitude');
 ylabel(ax, 'L rebound');
 zlabel(ax, 'R rebound');
+
 end
