@@ -59,7 +59,11 @@ for i = 1 : numel(childAxes)
         delete(childAxes(i));
     end
 end
+fontName = get(axes, 'FontName');
+fontSize = get(axes, 'FontSize');
 cla(axes, 'reset');
+set(axes, 'FontName', fontName);
+set(axes, 'FontSize', fontSize);
 end
 
 function axesArray = getNewAxesForSublot(axes, n)
