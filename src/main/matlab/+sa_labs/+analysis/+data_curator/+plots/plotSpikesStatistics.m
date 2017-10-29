@@ -13,6 +13,9 @@ for i = 1 : n
     device = devices{i};
 
     statistics = epochData.getDerivedResponse('spikeStatistics', device);
+    if isempty(statistics)
+        error('spikeStatistics is an inmemory attribute. Run spike detection again to visualize the statistics')
+    end
     peakAmplitudes = statistics.peakAmplitudes;
     
     rebound = statistics.rebound;
