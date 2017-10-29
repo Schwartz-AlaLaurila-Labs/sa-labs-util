@@ -49,6 +49,8 @@ spikeAmplitudes = cell(nTraces, 1);
 refractoryViolations = cell(nTraces, 1);
 
 for tt = 1 : nTraces
+    statistics(tt) = struct();
+    
     currentTrace = dataMatrix(tt, :);
     if abs(max(currentTrace)) > abs(min(currentTrace)) % flip it over, big peaks down
         currentTrace = -currentTrace;
@@ -96,10 +98,7 @@ for tt = 1 : nTraces
         spikeTimes{tt} = [];
         spikeAmplitudes{tt} = [];
         refractoryViolations{tt} = [];
-        disp(['Trial '  num2str(tt) ': no spikes!']);
-        if (checkDetection)
-            plotClusteringData();
-        end
+        warning(['Trial '  num2str(tt) ': no spikes!']);
         continue
     end
     
@@ -107,10 +106,10 @@ for tt = 1 : nTraces
     refractoryViolations{tt} = find(diff(spikeTimes{tt}) < refractoryPeriod) + 1;
     ref_violations = length(refractoryViolations{tt});
     if ref_violations > 0
-        disp(['Trial '  num2str(tt) ': ' num2str(ref_violations) ' refractory violations']);
+        warning(['Trial '  num2str(tt) ': ' num2str(ref_violations) ' refractory violations']);
     end
     
-    statistics(tt) = struct();
+    
     statistics(tt).refractoryViolations = refractoryViolations{tt};
     statistics(tt).spikeClusterIndex = spikeClusterIndex;
     statistics(tt).clusterIndex = clusterIndex;
