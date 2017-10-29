@@ -49,7 +49,7 @@ for i = 1 : n
     hold(axes, 'off');
 end
 xlabel(axes, 'Time (s)');
-
+title(axesArray(1), ['Epoch number (' num2str(epochData.get('epochNum')) ')']);
 end
 
 function plotSpikes(epochData, device, x, data, axes)
