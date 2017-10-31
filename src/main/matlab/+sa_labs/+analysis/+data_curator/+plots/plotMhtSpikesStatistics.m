@@ -1,4 +1,4 @@
-function  plotSpikesStatistics(epochData, devices, axes, varargin)
+function  plotMhtSpikesStatistics(epochData, devices, axes, varargin)
 n = numel(devices);
 sa_labs.analysis.util.clearAxes(axes);
 
@@ -14,7 +14,7 @@ for i = 1 : n
 
     statistics = epochData.getDerivedResponse('spikeStatistics', device);
     if isempty(statistics)
-        error('spikeStatistics is an inmemory attribute. Run spike detection again to visualize the statistics')
+        error('spikeStatistics is an inmemory attribute. Run mhtSpikeDetector again to visualize the statistics')
     end
     peakAmplitudes = statistics.peakAmplitudes;
     
