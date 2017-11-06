@@ -25,7 +25,7 @@ for epochData = epochs
     for i = 1 : numel(parameter.devices)
         device = parameter.devices{i};
         
-        if epochData.hasDerivedResponse('spikeTimes', device) && ~ parameter.override
+        if epochData.hasDerivedResponse('spikeTimes', device) && ~ parameter.overwrite
             error('spikeTimes already present! To overwrite, Click on overwrite in simpleSpikeDetector pre-processor');
         end
         
