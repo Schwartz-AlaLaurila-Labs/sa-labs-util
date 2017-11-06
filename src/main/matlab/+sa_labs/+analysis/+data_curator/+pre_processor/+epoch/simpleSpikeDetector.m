@@ -7,6 +7,9 @@ function simpleSpikeDetector(epochs, parameter)
 % threshold:
 %   default: -10
 %   description: Threshold value to detect spikes
+% overwrite:
+%   default: false
+%   description: Can override previously detected feature
 % devices:
 %   default: "@(epoch, devices) sa_labs.analysis.common.getdeviceForEpoch(epoch, devices)"
 %   description: List of amplifier channels for the given epoch
@@ -20,8 +23,12 @@ spikeFilter = structure.spikeFilter;
 
 for epochData = epochs
     for i = 1 : numel(parameter.devices)
-        
         device = parameter.devices{i};
+        
+        if epochData.hasDerivedResponse('spikeTimes', device) && ~ parameter.override
+            error('spikeTimes already present! To overwrite, Click on overwrite in simpleSpikeDetector pre-processor');
+        end
+        
         sampleRate = epochData.get('sampleRate');
         data = epochData.getResponse(device);
         response = data.quantity';

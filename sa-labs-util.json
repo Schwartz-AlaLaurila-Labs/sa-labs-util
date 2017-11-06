@@ -8,7 +8,7 @@
 		"name": "sa-labs-util",
 		"pathPlacement": "append",
 		"requirementHook": "",
-		"subfolder": "",
+		"subfolder": "src/main",
 		"toolboxRoot": "",
 		"type": "git",
 		"update": "",
