@@ -48,7 +48,8 @@ for epochData = epochs
         else
             spikeIndices = getSpikeIndicesForPositiveThresold(spikeIndices, response);
         end
-        %remove double-counted spikes
+        
+        % Remove double-counted spikes
         if length(spikeIndices) >= 2
             ISItest = diff(spikeIndices);
             spikeIndices = spikeIndices([(ISItest > (0.001 * sampleRate)) true]);

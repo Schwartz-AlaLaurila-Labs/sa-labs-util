@@ -12,6 +12,6 @@ function clearAxes(axes)
     fontSize = get(axes, 'FontSize');
     cla(axes, 'reset');
     set(axes, 'FontName', fontName);
-    set(axes, 'FontSize', fontSize);
+    set(axes, 'FontSize', fontSize - 2);
 
 end
