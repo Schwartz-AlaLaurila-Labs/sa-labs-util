@@ -5,7 +5,7 @@ function diaryPlot(epochData, parameter, axes)
 %   default : epochNum, epochStartTime
 %   description: Protocol properties can be visualized for above deafault properties
 % yAxis:
-%   default: "@(epochData) setdiff(epochData.parentCell.getEpochKeysetUnion(), {'epochNum', 'epochTime'})"
+%   default: "@(epochData) setdiff(epochData.parentCell.getEpochKeysetUnion(), {'epochNum', 'epochStartTime'})"
 %   description: List of protocol properties excluding epochNum and epochTime
 % ---
 import sa_labs.analysis.*;
@@ -17,13 +17,13 @@ displayVals = cellData.getEpochValues(parameter.yAxis);
 
 if isnumeric(displayVals)
     hold(axes, 'on');
-    plot(axes, xvals, displayVals, 'bo');
+    stem(axes, xvals, displayVals, 'bo');
     set(axes, 'YtickMode', 'auto', 'YtickLabelMode', 'auto');
     set(axes, 'Ylim', [min(displayVals) - .1 * range(displayVals) - .1, max(displayVals) + .1 * range(displayVals) + .1]);
 else
     % remove nans
     for i = 1:length(displayVals)
-        if isnan(displayVals{i})
+        if isempty(displayVals{i})
             displayVals{i} = '-unset-';
         end
         displayVals{i} = num2str(displayVals{i});
@@ -36,7 +36,7 @@ else
     end
     hold(axes, 'on');
     
-    plot(axes, xvals, valInd, 'bo');
+    stem(axes, xvals, valInd, 'bo');
     set(axes, 'Ytick', unique(valInd), 'YtickLabel', uniqueVals);
     set(axes, 'Ylim', [0 max(valInd)+1]);
 end
