@@ -1,4 +1,21 @@
-function  plotMhtSpikesStatistics(epochData, devices, axes, varargin)
+function  plotMhtSpikesStatistics(epochData, parameter, axes)
+
+% description : Plot the k means cluster (2 cluster) of spike and non spike amplitude. Below 'YAML' describes the fields present in the parameter structure.
+% xAxis:
+%   default : Peak Amplitude
+%   description: Peak amplitude of spikes 
+% yAxis:
+%   default: L rebound
+%   description: Left rebound of the spike
+% zAxis:
+%   default: R rebound
+%   description: Right rebound of the spike
+% devices:
+%   default: Amp1
+%   description: It is the value selected from the device pannel in curator interface
+% ---
+
+devices = parameter.devices;
 n = numel(devices);
 sa_labs.analysis.util.clearAxes(axes);
 

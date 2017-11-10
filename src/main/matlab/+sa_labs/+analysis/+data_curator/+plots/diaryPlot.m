@@ -8,6 +8,7 @@ function diaryPlot(epochData, parameter, axes)
 %   default: "@(epochData) setdiff(epochData.parentCell.getEpochKeysetUnion(), {'epochNum', 'epochStartTime'})"
 %   description: List of protocol properties excluding epochNum and epochTime
 % ---
+
 import sa_labs.analysis.*;
 util.clearAxes(axes);
 cellData = epochData.parentCell;

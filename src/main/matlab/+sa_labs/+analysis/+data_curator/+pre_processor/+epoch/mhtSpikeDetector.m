@@ -7,6 +7,9 @@ function mhtSpikeDetector(epochs, parameter)
 % searchWindow:
 %   default: 1E-3
 %   description: search window for spikes
+% overwrite:
+%   default: false
+%   description: Can override previously detected feature
 % devices:
 %   default: "@(epoch, devices) sa_labs.analysis.common.getdeviceForEpoch(epoch, devices)"
 %   description: List of amplifier channels for the given epoch
@@ -15,6 +18,11 @@ function mhtSpikeDetector(epochs, parameter)
 for epochData = epochs
     for i = 1 : numel(parameter.devices)
         device = parameter.devices{i};
+        
+        if epochData.hasDerivedResponse('spikeTimes', device) && ~ parameter.overwrite
+            error('spikeTimes already present! To overwrite, Click on overwrite in simpleSpikeDetector pre-processor');
+        end
+       
         response = epochData.getResponse(device);
         
         [spikeTimes, spikeAmplitudes, statistics] = mht.spike_util.detectSpikes(response.quantity,...
