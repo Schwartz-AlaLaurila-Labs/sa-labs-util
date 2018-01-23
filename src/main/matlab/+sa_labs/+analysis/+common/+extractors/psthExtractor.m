@@ -25,7 +25,7 @@ function psthExtractor(~, epochGroup, paramter)
 	durationSteps = duration * rate;
 	
 	bins = 1 : n : durationSteps;
-	spikeTimeSteps = (cell2mat(spikeTimes) * 1e-3 + preTime) * rate;
+	spikeTimeSteps = cell2mat(spikeTimes) + preTime * rate;
 	count = histc(spikeTimeSteps, bins);
 	
 	if smoothingWindowPSTH
@@ -35,13 +35,13 @@ function psthExtractor(~, epochGroup, paramter)
 	    count = conv(count, w, 'same');
 	end
 
-	count = count / numel(spikeTimes) / binWidthPSTH ;
+	freq = count / numel(spikeTimes) / binWidthPSTH ;
 	x = bins/rate - preTime;
     
-    epochGroup.createFeature('PSTH', count, ...
+    epochGroup.createFeature('PSTH', freq, ...
         'xAxis', x, ...
         'xLabel', 'Time (s)', ...
-        'yLabel', 'PSTH', ...
+        'yLabel', 'Firing rate (Hz)', ...
         'binWidthPSTH', binWidthPSTH, ...
         'smoothingWindowPSTH', smoothingWindowPSTH);
 end
